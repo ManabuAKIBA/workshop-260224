@@ -14,6 +14,14 @@ class TimerManager {
         this.apiClient = apiClient;
         this.pollingInterval = null;
         this.isPolling = false;
+        this.lastCompletedState = null; // 最後に完了したセッションの状態を記録
+        
+        // デフォルトのセッション時間（分）
+        this.sessionDurations = {
+            'work': 25,
+            'break': 5,
+            'long_break': 15
+        };
     }
 
     /**
@@ -91,18 +99,24 @@ class TimerManager {
                 document.dispatchEvent(event);
 
                 // タイマー完了時の処理
-                if (status.is_completed && status.state === 'work') {
-                    console.log('Timer completed! Recording session...');
-                    
-                    // セッション完了を記録
-                    await this.completeSession(status.state, 25);
-                    
-                    // 統計更新イベントを発火
-                    const statsEvent = new CustomEvent('stats-update');
-                    document.dispatchEvent(statsEvent);
-                    
-                    // ポーリング停止
-                    this.stopPolling();
+                if (status.is_completed && status.state !== 'stopped') {
+                    // 同じセッションを二重に記録しないようにチェック
+                    if (this.lastCompletedState !== status.state) {
+                        console.log('Timer completed! Recording session...');
+                        
+                        // セッションタイプに応じた時間を取得
+                        const duration = this.sessionDurations[status.state] || 25;
+                        
+                        // セッション完了を記録
+                        await this.completeSession(status.state, duration);
+                        
+                        // 完了した状態を記録
+                        this.lastCompletedState = status.state;
+                        
+                        // 統計更新イベントを発火
+                        const statsEvent = new CustomEvent('stats-update');
+                        document.dispatchEvent(statsEvent);
+                    }
                 }
             } catch (error) {
                 console.error('Polling error:', error);

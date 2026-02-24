@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (startBtn) {
         startBtn.addEventListener('click', async () => {
-            const currentText = startBtn.textContent;
-            if (currentText === '再開') {
+            // タイマーの状態に基づいて開始/再開を判断
+            if (timerManager.status && timerManager.status.is_paused) {
                 await timerManager.resume();
             } else {
                 await timerManager.start();

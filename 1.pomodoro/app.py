@@ -10,17 +10,17 @@ from pathlib import Path
 from config import get_config
 from routes.web import web_bp
 from routes.api import api_bp
-from models.clock import RealClock
 from models.config_model import TimerConfig
 from services.timer_service import TimerService
 
 
-def create_app(config_name=None):
+def create_app(config_name=None, clock=None):
     """
     Flask アプリケーションファクトリー
     
     Args:
         config_name: 設定名 ('development', 'testing', 'production')
+        clock: 時刻管理オブジェクト（テスト用にMockClockを注入可能）
     
     Returns:
         Flask: 設定済みの Flask アプリケーション
@@ -35,7 +35,14 @@ def create_app(config_name=None):
     config.DATA_DIR.mkdir(parents=True, exist_ok=True)
     
     # 依存性の初期化
-    clock = RealClock()
+    # テスト環境ではMockClockを注入可能にする
+    if clock is None:
+        from models.clock import RealClock, MockClock
+        if app.config['TESTING']:
+            clock = MockClock()
+        else:
+            clock = RealClock()
+    
     timer_config = TimerConfig(
         work_minutes=config.TIMER_DEFAULT_WORK,
         break_minutes=config.TIMER_DEFAULT_BREAK,
@@ -45,8 +52,9 @@ def create_app(config_name=None):
     # サービスの初期化
     timer_service = TimerService(timer_config, clock)
     
-    # アプリケーションにサービスを注入
+    # アプリケーションにサービスとクロックを注入
     app.timer_service = timer_service
+    app.clock = clock  # テスト時にクロックを操作できるようにする
     
     # Blueprintの登録
     app.register_blueprint(web_bp)

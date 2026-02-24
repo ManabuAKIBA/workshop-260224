@@ -5,7 +5,7 @@
 """
 
 from typing import Dict, Any
-from models.timer import PomodoroTimer, TimerState
+from models.timer import PomodoroTimer
 from models.config_model import TimerConfig
 from models.clock import Clock
 

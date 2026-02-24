@@ -133,14 +133,13 @@ class TestTimerAPIIntegration:
         assert status_data['state'] == 'work'
         assert status_data['remaining'] <= 1500
     
-    def test_multiple_starts_reset_timer(self, client):
+    def test_multiple_starts_reset_timer(self, client, app):
         """複数回開始すると、タイマーがリセットされることを確認"""
         # 1回目の開始
         client.post('/api/timer/start')
         
-        # 少し待って状態確認
-        import time
-        time.sleep(0.1)
+        # MockClockで時間を進める
+        app.clock.advance(5.0)
         status1 = client.get('/api/timer/status')
         data1 = json.loads(status1.data)
         

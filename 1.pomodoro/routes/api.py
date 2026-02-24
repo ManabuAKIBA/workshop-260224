@@ -48,3 +48,19 @@ def get_timer_status():
     timer_service = current_app.timer_service
     status = timer_service.get_status()
     return jsonify(status)
+
+
+@api_bp.route('/session/reset-today', methods=['POST'])
+def reset_today_sessions():
+    """
+    本日の統計リセットエンドポイント
+    
+    POST /api/session/reset-today
+    
+    Returns:
+        JSONレスポンス:
+            - success: 成功フラグ
+    """
+    session_manager = current_app.session_manager
+    session_manager.reset_today()
+    return jsonify({"success": True})

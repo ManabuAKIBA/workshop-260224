@@ -151,3 +151,31 @@ class TestTimerAPIIntegration:
         
         # 2回目の方が残り時間が多いはず（リセットされた）
         assert data2['remaining'] >= data1['remaining']
+
+
+class TestSessionResetAPI:
+    """POST /api/session/reset-today のテスト"""
+    
+    def test_reset_endpoint_exists(self, client):
+        """エンドポイントが存在することを確認"""
+        response = client.post('/api/session/reset-today')
+        assert response.status_code == 200
+    
+    def test_reset_returns_json(self, client):
+        """JSONレスポンスが返ることを確認"""
+        response = client.post('/api/session/reset-today')
+        assert response.content_type == 'application/json'
+    
+    def test_reset_response_structure(self, client):
+        """レスポンス構造を確認"""
+        response = client.post('/api/session/reset-today')
+        data = json.loads(response.data)
+        
+        assert 'success' in data
+    
+    def test_reset_success_flag(self, client):
+        """成功フラグがTrueであることを確認"""
+        response = client.post('/api/session/reset-today')
+        data = json.loads(response.data)
+        
+        assert data['success'] is True

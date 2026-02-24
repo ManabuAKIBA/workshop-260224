@@ -13,6 +13,8 @@ from routes.api import api_bp
 from models.clock import RealClock
 from models.config_model import TimerConfig
 from services.timer_service import TimerService
+from models.session import SessionManager
+from models.repository import FileRepository
 
 
 def create_app(config_name=None):
@@ -45,8 +47,13 @@ def create_app(config_name=None):
     # サービスの初期化
     timer_service = TimerService(timer_config, clock)
     
+    # セッションマネージャーの初期化
+    session_repository = FileRepository(str(config.DATA_DIR / 'sessions.json'))
+    session_manager = SessionManager(session_repository)
+    
     # アプリケーションにサービスを注入
     app.timer_service = timer_service
+    app.session_manager = session_manager
     
     # Blueprintの登録
     app.register_blueprint(web_bp)

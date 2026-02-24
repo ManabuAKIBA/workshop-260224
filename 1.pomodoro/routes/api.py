@@ -29,6 +29,51 @@ def start_timer():
     return jsonify(result)
 
 
+@api_bp.route('/timer/pause', methods=['POST'])
+def pause_timer():
+    """
+    タイマー一時停止エンドポイント
+    
+    POST /api/timer/pause
+    
+    Returns:
+        JSONレスポンス: タイマー状態データ
+    """
+    timer_service = current_app.timer_service
+    status = timer_service.pause()
+    return jsonify(status)
+
+
+@api_bp.route('/timer/resume', methods=['POST'])
+def resume_timer():
+    """
+    タイマー再開エンドポイント
+    
+    POST /api/timer/resume
+    
+    Returns:
+        JSONレスポンス: タイマー状態データ
+    """
+    timer_service = current_app.timer_service
+    status = timer_service.resume()
+    return jsonify(status)
+
+
+@api_bp.route('/timer/reset', methods=['POST'])
+def reset_timer():
+    """
+    タイマーリセットエンドポイント
+    
+    POST /api/timer/reset
+    
+    Returns:
+        JSONレスポンス: タイマー状態データ
+    """
+    timer_service = current_app.timer_service
+    status = timer_service.reset()
+    return jsonify(status)
+
+
 @api_bp.route('/timer/status', methods=['GET'])
 def get_timer_status():
     """

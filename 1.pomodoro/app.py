@@ -9,6 +9,10 @@ from pathlib import Path
 
 from config import get_config
 from routes.web import web_bp
+from routes.api import api_bp
+from models.clock import RealClock
+from models.config_model import TimerConfig
+from services.timer_service import TimerService
 
 
 def create_app(config_name=None):
@@ -30,15 +34,23 @@ def create_app(config_name=None):
     # データディレクトリを作成
     config.DATA_DIR.mkdir(parents=True, exist_ok=True)
     
+    # 依存性の初期化
+    clock = RealClock()
+    timer_config = TimerConfig(
+        work_minutes=config.TIMER_DEFAULT_WORK,
+        break_minutes=config.TIMER_DEFAULT_BREAK,
+        long_break_minutes=config.TIMER_LONG_BREAK
+    )
+    
+    # サービスの初期化
+    timer_service = TimerService(timer_config, clock)
+    
+    # アプリケーションにサービスを注入
+    app.timer_service = timer_service
+    
     # Blueprintの登録
     app.register_blueprint(web_bp)
-    
-    # 依存性の初期化は Phase 2 以降で実装予定
-    # - Clock の初期化
-    # - Repository の初期化
-    # - Timer, SessionManager の初期化
-    # - Service 層の初期化
-    # - API Routes の登録
+    app.register_blueprint(api_bp)
     
     return app
 

@@ -1,0 +1,60 @@
+/* ポモドーロタイマー - タイマー固有スタイル */
+
+/* サーキュラープログレス */
+.progress-container {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin: 2rem auto;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.progress-ring__background {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 12;
+}
+
+.progress-ring__circle {
+    fill: none;
+    stroke: #5b6ef5;
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.35s ease-out;
+}
+
+/* タイマー表示 */
+.timer-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3.5rem;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    font-family: 'Courier New', monospace;
+    color: var(--text-primary);
+    user-select: none;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+    .progress-container {
+        width: 200px;
+        height: 200px;
+    }
+
+    .timer-display {
+        font-size: 2.75rem;
+    }
+
+    .progress-ring__background,
+    .progress-ring__circle {
+        stroke-width: 10;
+    }
+}

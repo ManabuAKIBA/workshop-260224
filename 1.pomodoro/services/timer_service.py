@@ -49,6 +49,36 @@ class TimerService:
             "display_time": self.timer.get_display_time()
         }
     
+    def pause(self) -> Dict[str, Any]:
+        """
+        タイマーを一時停止
+        
+        Returns:
+            Dict[str, Any]: タイマー状態データ
+        """
+        self.timer.pause()
+        return self.get_status()
+    
+    def resume(self) -> Dict[str, Any]:
+        """
+        タイマーを再開
+        
+        Returns:
+            Dict[str, Any]: タイマー状態データ
+        """
+        self.timer.resume()
+        return self.get_status()
+    
+    def reset(self) -> Dict[str, Any]:
+        """
+        タイマーをリセット
+        
+        Returns:
+            Dict[str, Any]: タイマー状態データ
+        """
+        self.timer.reset()
+        return self.get_status()
+    
     def get_status(self) -> Dict[str, Any]:
         """
         現在のタイマー状態を取得

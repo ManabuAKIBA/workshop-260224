@@ -14,44 +14,64 @@ class TimerManager {
      * タイマーを開始
      */
     async start() {
-        this.status = await api.post('/api/timer/start');
-        this.updateDisplay();
-        this.startPolling();
+        try {
+            this.status = await api.post('/api/timer/start');
+            this.updateDisplay();
+            this.startPolling();
+        } catch (error) {
+            console.error('Failed to start timer:', error);
+        }
     }
 
     /**
      * タイマーを一時停止
      */
     async pause() {
-        this.status = await api.post('/api/timer/pause');
-        this.updateDisplay();
-        this.stopPolling();
+        try {
+            this.status = await api.post('/api/timer/pause');
+            this.updateDisplay();
+            this.stopPolling();
+        } catch (error) {
+            console.error('Failed to pause timer:', error);
+        }
     }
 
     /**
      * タイマーを再開
      */
     async resume() {
-        this.status = await api.post('/api/timer/resume');
-        this.updateDisplay();
-        this.startPolling();
+        try {
+            this.status = await api.post('/api/timer/resume');
+            this.updateDisplay();
+            this.startPolling();
+        } catch (error) {
+            console.error('Failed to resume timer:', error);
+        }
     }
 
     /**
      * タイマーをリセット
      */
     async reset() {
-        this.status = await api.post('/api/timer/reset');
-        this.updateDisplay();
-        this.stopPolling();
+        try {
+            this.status = await api.post('/api/timer/reset');
+            this.updateDisplay();
+            this.stopPolling();
+        } catch (error) {
+            console.error('Failed to reset timer:', error);
+        }
     }
 
     /**
      * タイマー状態を取得
      */
     async getStatus() {
-        this.status = await api.get('/api/timer/status');
-        this.updateDisplay();
+        try {
+            this.status = await api.get('/api/timer/status');
+            this.updateDisplay();
+        } catch (error) {
+            console.error('Failed to get timer status:', error);
+        }
     }
 
     /**

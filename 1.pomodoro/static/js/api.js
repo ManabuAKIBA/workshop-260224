@@ -13,12 +13,22 @@ class APIClient {
      * @returns {Promise<Object>} レスポンスJSON
      */
     async post(endpoint, data = {}) {
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        return response.json();
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return response.json();
+        } catch (error) {
+            console.error('API POST request failed:', error);
+            throw error;
+        }
     }
 
     /**
@@ -28,8 +38,18 @@ class APIClient {
      * @returns {Promise<Object>} レスポンスJSON
      */
     async get(endpoint) {
-        const response = await fetch(endpoint);
-        return response.json();
+        try {
+            const response = await fetch(endpoint);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return response.json();
+        } catch (error) {
+            console.error('API GET request failed:', error);
+            throw error;
+        }
     }
 }
 

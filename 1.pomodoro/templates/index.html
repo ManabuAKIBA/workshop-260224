@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポモドーロタイマー</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/timer.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>ポモドーロタイマー</h1>
+        </header>
+
+        <!-- タイマーセクション -->
+        <section class="timer-section">
+            <div class="state-label" id="stateLabel">作業中</div>
+
+            <!-- サーキュラープログレス -->
+            <div class="progress-container">
+                <svg class="progress-ring" viewBox="0 0 200 200">
+                    <circle class="progress-ring__background" cx="100" cy="100" r="90"></circle>
+                    <circle class="progress-ring__circle" cx="100" cy="100" r="90"></circle>
+                </svg>
+                <div class="timer-display" id="timerDisplay">25:00</div>
+            </div>
+
+            <!-- アクションボタン -->
+            <div class="button-group">
+                <button id="startBtn" class="btn btn-primary">開始</button>
+                <button id="pauseBtn" class="btn btn-primary" style="display: none;">一時停止</button>
+                <button id="resetBtn" class="btn btn-outline">リセット</button>
+            </div>
+        </section>
+
+        <!-- 今日の進捗セクション -->
+        <section class="stats-section">
+            <h2>今日の進捗</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="sessionsCompleted">0</div>
+                    <div class="stat-label">完了</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="focusTime">0分</div>
+                    <div class="stat-label">集中時間</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScriptファイル（後のステップで実装） -->
+    <!-- <script src="{{ url_for('static', filename='js/api.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/timer.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/progress.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/main.js') }}"></script> -->
+</body>
+</html>

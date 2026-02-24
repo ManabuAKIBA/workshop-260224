@@ -4,6 +4,8 @@ class CircularProgressManager {
         this.circle = document.querySelector('.progress-ring__circle');
         if (!this.circle) {
             console.error('Progress circle element not found');
+            this.radius = 0;
+            this.circumference = 0;
             return;
         }
         this.radius = this.circle.r.baseVal.value;

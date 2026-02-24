@@ -13,16 +13,19 @@ class TimerManager {
 
     async pause() {
         this.status = await api.post('/api/timer/pause');
+        this.stopPolling();
         this.updateUI();
     }
 
     async resume() {
         this.status = await api.post('/api/timer/resume');
+        this.startPolling();
         this.updateUI();
     }
 
     async reset() {
         this.status = await api.post('/api/timer/reset');
+        this.stopPolling();
         this.updateUI();
     }
 

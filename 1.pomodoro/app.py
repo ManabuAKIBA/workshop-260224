@@ -10,6 +10,7 @@ from pathlib import Path
 from config import get_config
 from routes.web import web_bp
 from routes.api import api_bp
+from models.clock import RealClock, MockClock
 from models.config_model import TimerConfig
 from services.timer_service import TimerService
 
@@ -37,7 +38,6 @@ def create_app(config_name=None, clock=None):
     # 依存性の初期化
     # テスト環境ではMockClockを注入可能にする
     if clock is None:
-        from models.clock import RealClock, MockClock
         if app.config['TESTING']:
             clock = MockClock()
         else:

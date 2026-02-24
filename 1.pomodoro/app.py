@@ -12,7 +12,10 @@ from routes.web import web_bp
 from routes.api import api_bp
 from models.clock import RealClock
 from models.config_model import TimerConfig
+from models.repository import FileRepository
+from models.session import SessionManager
 from services.timer_service import TimerService
+from services.session_service import SessionService
 
 
 def create_app(config_name=None):
@@ -42,11 +45,17 @@ def create_app(config_name=None):
         long_break_minutes=config.TIMER_LONG_BREAK
     )
     
+    # リポジトリの初期化
+    session_repository = FileRepository(str(config.SESSION_DATA_FILE))
+    session_manager = SessionManager(session_repository)
+    
     # サービスの初期化
     timer_service = TimerService(timer_config, clock)
+    session_service = SessionService(session_manager, clock)
     
     # アプリケーションにサービスを注入
     app.timer_service = timer_service
+    app.session_service = session_service
     
     # Blueprintの登録
     app.register_blueprint(web_bp)

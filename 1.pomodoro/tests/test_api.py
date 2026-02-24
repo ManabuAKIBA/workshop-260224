@@ -151,3 +151,82 @@ class TestTimerAPIIntegration:
         
         # 2回目の方が残り時間が多いはず（リセットされた）
         assert data2['remaining'] >= data1['remaining']
+
+
+class TestTimerPauseAPI:
+    """POST /api/timer/pause のテスト"""
+    
+    def test_pause_endpoint_exists(self, client):
+        """エンドポイントが存在することを確認"""
+        response = client.post('/api/timer/pause')
+        assert response.status_code == 200
+    
+    def test_pause_returns_json(self, client):
+        """JSONレスポンスが返ることを確認"""
+        response = client.post('/api/timer/pause')
+        assert response.content_type == 'application/json'
+    
+    def test_pause_after_start(self, client):
+        """開始後に一時停止できることを確認"""
+        # タイマーを開始
+        client.post('/api/timer/start')
+        
+        # 一時停止
+        response = client.post('/api/timer/pause')
+        data = json.loads(response.data)
+        
+        assert data['is_paused'] is True
+        assert data['state'] == 'work'
+
+
+class TestTimerResumeAPI:
+    """POST /api/timer/resume のテスト"""
+    
+    def test_resume_endpoint_exists(self, client):
+        """エンドポイントが存在することを確認"""
+        response = client.post('/api/timer/resume')
+        assert response.status_code == 200
+    
+    def test_resume_returns_json(self, client):
+        """JSONレスポンスが返ることを確認"""
+        response = client.post('/api/timer/resume')
+        assert response.content_type == 'application/json'
+    
+    def test_resume_after_pause(self, client):
+        """一時停止後に再開できることを確認"""
+        # タイマーを開始して一時停止
+        client.post('/api/timer/start')
+        client.post('/api/timer/pause')
+        
+        # 再開
+        response = client.post('/api/timer/resume')
+        data = json.loads(response.data)
+        
+        assert data['is_paused'] is False
+        assert data['state'] == 'work'
+
+
+class TestTimerResetAPI:
+    """POST /api/timer/reset のテスト"""
+    
+    def test_reset_endpoint_exists(self, client):
+        """エンドポイントが存在することを確認"""
+        response = client.post('/api/timer/reset')
+        assert response.status_code == 200
+    
+    def test_reset_returns_json(self, client):
+        """JSONレスポンスが返ることを確認"""
+        response = client.post('/api/timer/reset')
+        assert response.content_type == 'application/json'
+    
+    def test_reset_stops_timer(self, client):
+        """リセットでタイマーが停止することを確認"""
+        # タイマーを開始
+        client.post('/api/timer/start')
+        
+        # リセット
+        response = client.post('/api/timer/reset')
+        data = json.loads(response.data)
+        
+        assert data['state'] == 'stopped'
+        assert data['is_paused'] is False

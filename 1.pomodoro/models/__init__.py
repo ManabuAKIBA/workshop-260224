@@ -12,12 +12,21 @@
 """
 
 from .clock import Clock, RealClock, MockClock
+from .config_model import TimerConfig
+from .timer import PomodoroTimer, TimerState
+from .session import SessionRecord, DailyStats, SessionManager
 from .repository import SessionRepository, InMemoryRepository, FileRepository
 
 __all__ = [
     'Clock',
     'RealClock',
     'MockClock',
+    'TimerConfig',
+    'PomodoroTimer',
+    'TimerState',
+    'SessionRecord',
+    'DailyStats',
+    'SessionManager',
     'SessionRepository',
     'InMemoryRepository',
     'FileRepository',

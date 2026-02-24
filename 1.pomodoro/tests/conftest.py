@@ -35,40 +35,41 @@ def runner(app):
     return app.test_cli_runner()
 
 
-# 以下のフィクスチャはステップ2以降で使用
-# @pytest.fixture
-# def mock_clock():
-#     """テスト用のモッククロック"""
-#     from models.clock import MockClock
-#     return MockClock(initial_time=0.0)
+# ステップ2で追加: タイマー関連のフィクスチャ
+@pytest.fixture
+def mock_clock():
+    """テスト用のモッククロック"""
+    from models.clock import MockClock
+    return MockClock(initial_time=0.0)
 
 
+@pytest.fixture
+def timer_config():
+    """テスト用のタイマー設定"""
+    from models.config_model import TimerConfig
+    return TimerConfig(
+        work_minutes=25,
+        break_minutes=5,
+        min_minutes=5,
+        max_minutes=99
+    )
+
+
+@pytest.fixture
+def short_timer_config():
+    """テスト用の短いタイマー設定（テストを高速化）"""
+    from models.config_model import TimerConfig
+    return TimerConfig(
+        work_minutes=1,  # 1分
+        break_minutes=1,
+        min_minutes=1,
+        max_minutes=99
+    )
+
+
+# 以下のフィクスチャはステップ3以降で使用
 # @pytest.fixture
 # def in_memory_repository():
 #     """テスト用のインメモリリポジトリ"""
 #     from models.repository import InMemoryRepository
 #     return InMemoryRepository()
-
-
-# @pytest.fixture
-# def timer_config():
-#     """テスト用のタイマー設定"""
-#     from models.config_model import TimerConfig
-#     return TimerConfig(
-#         work_minutes=25,
-#         break_minutes=5,
-#         min_minutes=5,
-#         max_minutes=99
-#     )
-
-
-# @pytest.fixture
-# def short_timer_config():
-#     """テスト用の短いタイマー設定（テストを高速化）"""
-#     from models.config_model import TimerConfig
-#     return TimerConfig(
-#         work_minutes=1,  # 1分
-#         break_minutes=1,
-#         min_minutes=1,
-#         max_minutes=99
-#     )

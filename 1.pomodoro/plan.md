@@ -99,12 +99,12 @@ pytest tests/ --cov=routes --cov=app --cov-report=term-missing
 
 ### 実装内容
 
-- [ ] `models/clock.py`
+- [x] `models/clock.py`
   - `Clock`（抽象インターフェース）
   - `RealClock`（本番用：実際のシステム時刻）
   - `MockClock`（テスト用：制御可能な時刻）
 
-- [ ] `models/timer.py`
+- [x] `models/timer.py`
   - `TimerState`（状態定義）
   - `PomodoroTimer`（タイマーロジック）
     - `start()` - タイマー開始
@@ -115,7 +115,7 @@ pytest tests/ --cov=routes --cov=app --cov-report=term-missing
     - `get_progress()` - 進捗率計算（0.0～1.0）
     - `is_completed()` - 完了判定
 
-- [ ] `tests/test_timer.py`（テストファースト）
+- [x] `tests/test_timer.py`（テストファースト）
   - タイマー開始時の残り時間テスト
   - MockClockで時間を進めたときの動作テスト
   - 進捗率の計算テスト
@@ -132,8 +132,9 @@ pytest tests/test_timer.py -v
 
 ### 成功条件
 
-- ✅ すべてのテストがパスする
+- ✅ すべてのテストがパスする（28テスト）
 - ✅ MockClockでタイマーの動作を制御できる
+- ✅ カバレッジ96%達成
 
 ---
 
@@ -144,12 +145,12 @@ pytest tests/test_timer.py -v
 
 ### 実装内容
 
-- [ ] `models/repository.py`
+- [x] `models/repository.py`
   - `SessionRepository`（抽象インターフェース）
   - `InMemoryRepository`（テスト用：メモリ保存）
   - `FileRepository`（本番用：JSON保存）
 
-- [ ] `models/session.py`
+- [x] `models/session.py`
   - `SessionRecord`（セッション記録データクラス）
   - `DailyStats`（本日の統計データクラス）
   - `SessionManager`（セッション管理ロジック）
@@ -157,7 +158,7 @@ pytest tests/test_timer.py -v
     - `get_today_stats()` - 本日の統計取得
     - `reset_today()` - 本日の統計リセット
 
-- [ ] `tests/test_session.py`（テストファースト）
+- [x] `tests/test_session.py`（テストファースト）
   - セッション完了記録のテスト
   - 本日の統計計算のテスト
   - InMemoryRepositoryでの読み書きテスト
@@ -173,8 +174,10 @@ pytest tests/test_session.py -v
 
 ### 成功条件
 
-- ✅ すべてのテストがパスする
+- ✅ すべてのテストがパスする（26テスト）
 - ✅ InMemoryRepositoryでデータの永続化ができる
+- ✅ SessionManagerでセッション記録と統計計算が正常動作
+- ✅ models/session.py のカバレッジ98%達成
 
 ---
 

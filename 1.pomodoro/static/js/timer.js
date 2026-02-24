@@ -7,15 +7,18 @@ class TimerManager {
 
     async start() {
         this.status = await api.post('/api/timer/start');
+        this.updateUI();
         this.startPolling();
     }
 
     async pause() {
         this.status = await api.post('/api/timer/pause');
+        this.updateUI();
     }
 
     async resume() {
         this.status = await api.post('/api/timer/resume');
+        this.updateUI();
     }
 
     async reset() {
@@ -44,6 +47,11 @@ class TimerManager {
     }
 
     updateUI() {
+        if (!this.status) {
+            console.error('Timer status is not available');
+            return;
+        }
+        
         const { display_time, progress, state, is_paused } = this.status;
         
         document.getElementById('timerDisplay').textContent = display_time;

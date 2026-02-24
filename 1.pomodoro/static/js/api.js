@@ -6,11 +6,17 @@ class APIClient {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+        if (!response.ok) {
+            throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+        }
         return response.json();
     }
 
     async get(endpoint) {
         const response = await fetch(endpoint);
+        if (!response.ok) {
+            throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+        }
         return response.json();
     }
 }

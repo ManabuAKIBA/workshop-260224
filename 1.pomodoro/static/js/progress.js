@@ -2,6 +2,10 @@
 class CircularProgressManager {
     constructor() {
         this.circle = document.querySelector('.progress-ring__circle');
+        if (!this.circle) {
+            console.error('Progress circle element not found');
+            return;
+        }
         this.radius = this.circle.r.baseVal.value;
         this.circumference = 2 * Math.PI * this.radius;
         
@@ -10,6 +14,9 @@ class CircularProgressManager {
     }
 
     setProgress(progress) {
+        if (!this.circle) {
+            return;
+        }
         // progress: 0.0 ～ 1.0
         const offset = this.circumference * (1 - progress);
         this.circle.style.strokeDashoffset = offset;

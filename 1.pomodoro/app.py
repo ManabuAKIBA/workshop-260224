@@ -22,6 +22,7 @@ def create_app(config_name=None, clock=None):
     Args:
         config_name: 設定名 ('development', 'testing', 'production')
         clock: 時刻管理オブジェクト（テスト用にMockClockを注入可能）
+               Noneの場合、TESTING=Trueならば自動的にMockClockを使用
     
     Returns:
         Flask: 設定済みの Flask アプリケーション

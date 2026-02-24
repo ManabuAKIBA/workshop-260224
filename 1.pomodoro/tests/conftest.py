@@ -20,7 +20,16 @@ from app import create_app
 def app():
     """テスト用のFlaskアプリケーション"""
     app = create_app('testing')
-    return app
+    
+    # テスト実行前にリポジトリをクリア
+    if hasattr(app, 'session_service'):
+        app.session_service.session_manager.repository.clear()
+    
+    yield app
+    
+    # テスト実行後もクリア
+    if hasattr(app, 'session_service'):
+        app.session_service.session_manager.repository.clear()
 
 
 @pytest.fixture

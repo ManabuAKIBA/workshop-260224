@@ -47,6 +47,8 @@ Thumbs.db
 # Data files
 data/*.json
 !data/.gitkeep
+tests/test_data/*.json
+!tests/test_data/.gitkeep
 
 # Logs
 *.log

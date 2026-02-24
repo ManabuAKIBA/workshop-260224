@@ -99,7 +99,9 @@ class TimerManager {
                 document.dispatchEvent(event);
 
                 // タイマー完了時の処理
-                if (status.is_completed && status.state !== 'stopped') {
+                // 有効なセッションタイプのみ記録
+                const validSessionTypes = ['work', 'break', 'long_break'];
+                if (status.is_completed && validSessionTypes.includes(status.state)) {
                     // 同じセッションを二重に記録しないようにチェック
                     if (this.lastCompletedState !== status.state) {
                         console.log('Timer completed! Recording session...');
@@ -117,6 +119,11 @@ class TimerManager {
                         const statsEvent = new CustomEvent('stats-update');
                         document.dispatchEvent(statsEvent);
                     }
+                }
+                
+                // タイマーがリセットされた場合は状態をクリア
+                if (!status.is_completed) {
+                    this.lastCompletedState = null;
                 }
             } catch (error) {
                 console.error('Polling error:', error);
